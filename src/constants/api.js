@@ -1,0 +1,1 @@
+export const GraphQLAPI = 'http://localhost:8686/api/graphql';
