@@ -6,6 +6,7 @@ export const GET_BLOGS = gql`
         id
         title
         body
+        created_at
     }
 }
 `
@@ -15,6 +16,7 @@ export const CREATE_BLOG = gql`
             id
             title
             body
+            created_at
         }
     }
 `
