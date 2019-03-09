@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         padding: '30px 20px',
         textAlign: 'right',
+        paddingRight: 30
     },
     link: {
         display: 'block',

@@ -11,7 +11,7 @@ export const GET_BLOGS = gql`
 }
 `
 export const CREATE_BLOG = gql`
-    mutation createBlog($title: String, $body: String){
+    mutation CreateBlog($title: String!, $body: String!){
         createBlog(title: $title, body: $body) {
             id
             title

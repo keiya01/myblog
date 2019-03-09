@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flex: 1,
         flexDirection: 'column',
-        width: '90%',
+        width: '70%',
         margin: '0 auto',
         padding: '30px 15px',
         cursor: 'pointer',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        width: window.innerWidth * 0.6
+        width: window.innerWidth * 0.5
     },
     createdAt: {
         color: '#999',

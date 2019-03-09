@@ -3,34 +3,37 @@ import { StyleSheet, css } from 'aphrodite';
 import { Query, Mutation } from "react-apollo";
 import { GET_BLOGS, CREATE_BLOG } from "../graphql/blog";
 import BlogItem from './BlogItem';
+import NavigationScreen from './NavigationScreen';
 
 const { useRef, useEffect } = React;
 
 export default function BlogScreen(props) {
     return (
-        <div className={css(styles.container)}>
-            <div className={css(styles.bodyContainer)}>
-                <Query query={GET_BLOGS}>
-                    {({ loading, data }) => {
-                        if (loading) {
-                            return <p>Loading...</p>
-                        }
+        <NavigationScreen>
+            <div className={css(styles.container)}>
+                <div className={css(styles.bodyContainer)}>
+                    <Query query={GET_BLOGS}>
+                        {({ loading, data }) => {
+                            if (loading) {
+                                return <p>Loading...</p>
+                            }
 
-                        const { blogList } = data;
+                            const { blogList } = data;
 
-                        return (
-                            <>
-                                {blogList.map(blog => {
-                                    return (
-                                        <BlogItem key={blog.id} {...blog}/>
-                                    )
-                                })}
-                            </>
-                        )
-                    }}
-                </Query>
+                            return (
+                                <>
+                                    {blogList.map(blog => {
+                                        return (
+                                            <BlogItem key={blog.id} {...blog} />
+                                        )
+                                    })}
+                                </>
+                            )
+                        }}
+                    </Query>
+                </div>
             </div>
-        </div>
+        </NavigationScreen>
     )
 }
 
@@ -48,7 +51,7 @@ const hoverItem = [
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flex: 4,
+        flex: 7,
         flexDirection: 'column',
         alignItems: 'center',
         backgroundColor: '#fff'

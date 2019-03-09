@@ -20,6 +20,9 @@ input, button, textarea{
   appearance: none;
   border-radius: none;
 }
+input:focus, textarea:focus {
+  outline: none;
+}
 textarea{
 	resize: none;
 }
