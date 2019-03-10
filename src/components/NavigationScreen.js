@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         margin: '50px 0',
         textDecoration: 'none',
         ':hover': {
-            color: '#333'
+            color: '#516C9D',
+            fontWeight: 'bold'
         }
     }
 })

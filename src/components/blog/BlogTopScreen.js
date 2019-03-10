@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { Query, Mutation } from "react-apollo";
-import { GET_BLOGS, CREATE_BLOG } from "../graphql/blog";
+import { GET_BLOGS, CREATE_BLOG } from "../../graphql/blog";
 import BlogItem from './BlogItem';
-import NavigationScreen from './NavigationScreen';
-
-const { useRef, useEffect } = React;
+import NavigationScreen from '../NavigationScreen';
 
 export default function BlogScreen(props) {
     return (

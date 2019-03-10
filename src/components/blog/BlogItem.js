@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, css } from "aphrodite";
-import { formatDateTime } from "../commons/date";
+import { formatDateTime } from "../../commons/date";
 
 const { useRef, useEffect } = React;
 
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        width: window.innerWidth * 0.5
+        width: window.innerWidth * 0.5,
+        height: '100%'
     },
     createdAt: {
         color: '#999',
