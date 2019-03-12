@@ -21,7 +21,6 @@ export default function BlogForm(props) {
     const handleOnSubmit = () => {
         if (canSubmit) {
             mutation({ variables: { title, body } }).then((data) => {
-                console.log(data)
                 history.push("/")
             });
         }

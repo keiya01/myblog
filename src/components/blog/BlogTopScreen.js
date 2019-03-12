@@ -3,35 +3,42 @@ import { StyleSheet, css } from 'aphrodite';
 import { Query, Mutation } from "react-apollo";
 import { GET_BLOGS, CREATE_BLOG } from "../../graphql/blog";
 import BlogItem from './BlogItem';
-import NavigationScreen from '../NavigationScreen';
+import Header from '../Header';
 
 export default function BlogScreen(props) {
     return (
-        <NavigationScreen>
-            <div className={css(styles.container)}>
-                <div className={css(styles.bodyContainer)}>
-                    <Query query={GET_BLOGS}>
-                        {({ loading, data }) => {
-                            if (loading) {
-                                return <p>Loading...</p>
-                            }
+        <>
+            <Header />
+            <div className={css(styles.bodyContainer)}>
+                <Query
+                    query={GET_BLOGS}
+                    pollInterval={500}>
+                    {(query) => {
+                        const {
+                            loading,
+                            data,
+                        } = query;
 
-                            const { blogList } = data;
+                        if (loading) {
+                            return <p>Loading...</p>
+                        }
 
-                            return (
-                                <>
-                                    {blogList.map(blog => {
-                                        return (
-                                            <BlogItem key={blog.id} {...blog} />
-                                        )
-                                    })}
-                                </>
-                            )
-                        }}
-                    </Query>
-                </div>
+                        const { blogList } = data;
+
+
+                        return (
+                            <>
+                                {blogList.map(blog => {
+                                    return (
+                                        <BlogItem key={blog.id} {...blog} />
+                                    )
+                                })}
+                            </>
+                        )
+                    }}
+                </Query>
             </div>
-        </NavigationScreen>
+        </>
     )
 }
 
@@ -47,18 +54,11 @@ const hoverItem = [
 ]
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 7,
-        flexDirection: 'column',
-        alignItems: 'center',
-        backgroundColor: '#fff'
-    },
     bodyContainer: {
-        display: 'flex',
         width: '100%',
-        flexDirection: 'column',
+        height: '100%',
+        minHeight: '100vh',
         backgroundColor: '#fff',
-        paddingTop: 30
+        paddingTop: 80
     },
 })

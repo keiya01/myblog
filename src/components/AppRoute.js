@@ -4,24 +4,34 @@ import BlogTopScreen from './blog/BlogTopScreen';
 import BlogNewScreen from './blog/BlogNewScreen';
 import UserNewScreen from './user/UserNewScreen';
 
+const { useEffect } = React;
+
 const AuthComponent = props => {
-    const {component} = props;
+    const { component } = props;
     const id = localStorage.getItem('id');
-    if(id) {
+    if (id) {
         return component(props)
-    }else {
-        return <Redirect to='/signup'/>
+    } else {
+        return <Redirect to='/signup' />
     }
+}
+
+const ScrollToTop = (props) => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    });
+
+    return props.children
 }
 
 export default function AppRoute() {
     return (
         <Router>
-            <>
+            <ScrollToTop>
                 <Route path='/signup' component={UserNewScreen} />
-                <Route path='/new' render={props => <AuthComponent {...props} component={BlogNewScreen}/>} />
+                <Route path='/new' render={props => <AuthComponent {...props} component={BlogNewScreen} />} />
                 <Route path='/' exact component={BlogTopScreen} />
-            </>
+            </ScrollToTop>
         </Router>
     )
 }

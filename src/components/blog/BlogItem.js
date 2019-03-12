@@ -22,11 +22,8 @@ export default function BlogItem(props) {
 
 const styles = StyleSheet.create({
     blogList: {
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'column',
         width: '70%',
-        margin: '0 auto',
+        margin: '10px auto',
         padding: '30px 15px',
         cursor: 'pointer',
         ':hover': {
