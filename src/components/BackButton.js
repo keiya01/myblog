@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         boxShadow: '0 1px 3px #aaa',
         cursor: 'pointer',
+        transition: 'box-shadow 200ms',
         ':hover': {
-
             boxShadow: '0 0 3px #aaa',
         }
     },
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         lineHeight: '55px',
+        transition: 'color 300ms',
         ':hover': {
             color: '#516C9D'
         }

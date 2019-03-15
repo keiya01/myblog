@@ -28,7 +28,8 @@ export default function AppRoute() {
     return (
         <Router>
             <ScrollToTop>
-                <Route path='/signup' component={UserNewScreen} />
+                <Route path='/signup' render={props => <UserNewScreen isLogin={false} {...props}/>}/>
+                <Route path='/login' render={props => <UserNewScreen isLogin={true} {...props}/>}/>
                 <Route path='/new' render={props => <AuthComponent {...props} component={BlogNewScreen} />} />
                 <Route path='/' exact component={BlogTopScreen} />
             </ScrollToTop>

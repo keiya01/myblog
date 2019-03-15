@@ -26,7 +26,9 @@ const styles = StyleSheet.create({
         margin: '10px auto',
         padding: '30px 15px',
         cursor: 'pointer',
+        transition: 'box-shadow 100ms, transform 300ms',
         ':hover': {
+            transform: 'translateY(-1px)',
             boxShadow: '0px 1px 3px #aaa'
         }
     },

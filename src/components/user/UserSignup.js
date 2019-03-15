@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, css } from "aphrodite";
 import { useCanSubmit } from "../../hooks/form";
+import { Mutation } from 'react-apollo';
+import { CREATE_USER } from '../../graphql/user';
+import { CurrentUser } from '../../contexts/user';
 
-const { useReducer, useState } = React;
+const { useReducer, useState, useContext } = React;
 
 const initialState = {
     user: {
@@ -41,9 +44,10 @@ const reducer = (state, action) => {
     }
 }
 
-export default function UserForm(props) {
+export default function UserSignup(props) {
     const { mutation, history } = props;
 
+    const {setUser} = useContext(CurrentUser);
     const [state, dispatch] = useReducer(reducer, initialState);
     const {
         name,
@@ -56,43 +60,46 @@ export default function UserForm(props) {
         dispatch({ type, value: event.target.value });
     }
 
-    const handleOnSubmit = () => {
-        mutation({ variables: { name, nickname, password } }).then(({data}) => {
-            const id = data.createUser.public_id;
-            localStorage.setItem('id', id);
-            console.log(localStorage.getItem('id'))
-            history.push('/');
-        })
+    const handleOnSubmit = (mutation) => async () => {
+        const { data } = await mutation({ variables: { name, nickname, password } });
+        const id = data.createUser.public_id;
+        setUser(data.createUser);
+        localStorage.setItem('id', id);
+        history.push('/');
     }
 
     return (
-        <div className={css(styles.form)}>
-            <h3 className={css(styles.formTitle)}>Signup</h3>
-            <p>name</p>
-            <input
-                type='text'
-                value={name}
-                onChange={handleOnChange('name')} />
-            <br />
-            <p>nickname</p>
-            <input
-                type='text'
-                value={nickname}
-                onChange={handleOnChange('nickname')} />
-            <br />
-            <p>password</p>
-            <input
-                type='password'
-                value={password}
-                onChange={handleOnChange('password')} />
-            <br />
-            <button
-                disabled={!canSubmit}
-                className={css(styles.submitButton)}
-                onClick={handleOnSubmit}>
-                SignUp
+        <Mutation mutation={CREATE_USER}>
+            {mutation => (
+                <div className={css(styles.form)}>
+                    <h3 className={css(styles.formTitle)}>Signup</h3>
+                    <p>name</p>
+                    <input
+                        type='text'
+                        value={name}
+                        onChange={handleOnChange('name')} />
+                    <br />
+                    <p>nickname</p>
+                    <input
+                        type='text'
+                        value={nickname}
+                        onChange={handleOnChange('nickname')} />
+                    <br />
+                    <p>password</p>
+                    <input
+                        type='password'
+                        value={password}
+                        onChange={handleOnChange('password')} />
+                    <br />
+                    <button
+                        disabled={!canSubmit}
+                        className={css(styles.submitButton)}
+                        onClick={handleOnSubmit(mutation)}>
+                        Signup
             </button>
-        </div>
+                </div>
+            )}
+        </Mutation>
     )
 }
 

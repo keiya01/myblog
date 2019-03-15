@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { StyleSheet, css } from "aphrodite";
 import { useCanSubmit } from "../../hooks/form";
+import { CurrentUser } from "../../contexts/user";
 
-const { useState } = React;
+const { useState, useContext } = React;
 
 export default function BlogForm(props) {
     const { mutation, history } = props;
     const [title, changeTitle] = useState('');
     const [body, changeBody] = useState('');
-    const canSubmit = useCanSubmit([title, body])
+    const canSubmit = useCanSubmit([title, body]);
+    const { user: {id} } = useContext(CurrentUser);
 
     const handleChangeTitle = event => {
         changeTitle(event.target.value);
@@ -20,7 +22,7 @@ export default function BlogForm(props) {
 
     const handleOnSubmit = () => {
         if (canSubmit) {
-            mutation({ variables: { title, body } }).then((data) => {
+            mutation({ variables: { title, body, user_id: id } }).then((data) => {
                 history.push("/")
             });
         }
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
         ':disabled': {
             backgroundColor: '#ccc',
             boxShadow: 'none',
-        },  
+        },
         ':focus': {
             outline: 'none'
         },

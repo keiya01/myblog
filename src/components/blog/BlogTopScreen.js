@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import { Query, Mutation } from "react-apollo";
+import { Query } from "react-apollo";
 import { GET_BLOGS, CREATE_BLOG } from "../../graphql/blog";
 import BlogItem from './BlogItem';
 import Header from '../Header';
@@ -12,6 +12,7 @@ export default function BlogScreen(props) {
             <div className={css(styles.bodyContainer)}>
                 <Query
                     query={GET_BLOGS}
+                    variables={{user_id: 5}}
                     pollInterval={500}>
                     {(query) => {
                         const {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, css } from "aphrodite";
 import { Mutation } from "react-apollo";
 import { CREATE_BLOG } from "../../graphql/blog";
-import BackButton from './BackButton';
+import BackButton from '../BackButton';
 import BlogForm from './BlogForm';
 
 export default function BlogNewScreen(props) {

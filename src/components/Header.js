@@ -1,14 +1,42 @@
-import * as React from 'react';
+import React from 'react';
 import { StyleSheet, css } from "aphrodite";
 import { Link } from "react-router-dom";
+import { CurrentUser } from "../contexts/user";
+
+const { useContext } = React;
 
 export default function Header(props) {
+    const { user: current_user, setUser } = useContext(CurrentUser);
+    const isLogin = Object.keys(current_user).length !== 0;
+
+    const handleOnLogout = () => {
+        localStorage.removeItem('id');
+        setUser({});
+    }
+
     return (
         <div className={css(styles.headerContainer)}>
-            <div className={css(styles.leftLink)}>
-                <Link to='/new' className={css(styles.createButton)}>Create</Link>
-            </div>
-            <Link to='/' className={css(styles.link)}>Logout</Link>
+            {
+                isLogin
+                    ?
+                    <>
+                        <div className={css(styles.leftLink)}>
+                            <Link to='/new' className={css(styles.createButton)}>Create</Link>
+                        </div>
+                        <Link
+                            to='/'
+                            className={css(styles.link, styles.logoutButton)}
+                            onClick={handleOnLogout}>
+                            Logout
+                        </Link>
+                    </>
+                    :
+                    <>
+                        <div className={css(styles.leftLink)} />
+                        <Link to='/signup' className={css(styles.link, styles.signupButton)}>Signup</Link>
+                        <Link to='/login' className={css(styles.link, styles.loginButton)}>Login</Link>
+                    </>
+            }
         </div>
     )
 }
@@ -30,13 +58,15 @@ const styles = StyleSheet.create({
     },
     link: {
         fontSize: 16,
-        color: '#777',
-        margin: '0 20px',
         textDecoration: 'none',
         lineHeight: '50px',
+    },
+    logoutButton: {
+        color: '#777',
+        margin: '0 20px',
+        transition: 'color 100ms',
         ':hover': {
-            color: '#516C9D',
-            fontWeight: 'bold'
+            color: 'tomato',
         }
     },
     leftLink: {
@@ -63,5 +93,16 @@ const styles = StyleSheet.create({
             boxShadow: 'none',
             transform: 'translateY(1px)'
         }
+    },
+    signupButton: {
+        color: '#516c9d',
+        fontWeight: 'bold',
+        margin: '0 20px',
+        marginRight: 30,
+    },
+    loginButton: {
+        color: '#7b9ad0',
+        margin: '0 20px',
+        fontWeight: 'bold',
     }
 })

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Redirect } from "react-router-dom";
 import { StyleSheet, css } from "aphrodite";
-import { Mutation } from 'react-apollo';
-import { CREATE_USER } from '../../graphql/user';
-import UserForm from './UserForm';
+import UserSignup from './UserSignup';
+import UserLogin from './UserLogin';
 
 export default function UserNewScreen(props) {
-    const { history } = props;
+    const { history, isLogin } = props;
     const id = localStorage.getItem('id');
 
     if (id) {
@@ -15,13 +14,15 @@ export default function UserNewScreen(props) {
 
     return (
         <div className={css(styles.container)}>
-            <Mutation mutation={CREATE_USER}>
-                {(createUser, { data }) => (
-                    <UserForm
-                        mutation={createUser}
+            {
+                isLogin
+                    ?
+                    <UserLogin
                         history={history} />
-                )}
-            </Mutation>
+                    :
+                    <UserSignup
+                        history={history} />
+            }
         </div>
     )
 }
