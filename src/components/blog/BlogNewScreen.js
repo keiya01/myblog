@@ -12,7 +12,7 @@ export default function BlogNewScreen(props) {
         <Mutation mutation={CREATE_BLOG}>
             {(createBlog, { data }) => (
                 <>
-                    <BackButton history={props.history} />
+                    <BackButton history={history} />
                     <div className={css(styles.container)}>
                         <BlogForm history={history} mutation={createBlog}/>
                     </div>

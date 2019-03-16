@@ -10,6 +10,7 @@ const { useEffect } = React;
 const AuthComponent = props => {
     const { component } = props;
     const id = localStorage.getItem('id');
+
     if (id) {
         return component(props)
     } else {
