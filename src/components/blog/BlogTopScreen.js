@@ -12,7 +12,6 @@ export default function BlogScreen(props) {
             <div className={css(styles.bodyContainer)}>
                 <Query
                     query={GET_BLOGS}
-                    variables={{user_id: 5}}
                     pollInterval={500}>
                     {(query) => {
                         const {
