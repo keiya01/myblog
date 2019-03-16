@@ -8,11 +8,14 @@ export default function BlogItem(props) {
     const {
         title,
         body,
-        created_at
+        created_at,
+        onClick
     } = props;
 
     return (
-        <div className={css(styles.blogList)}>
+        <div
+            className={css(styles.blogList)}
+            onClick={onClick}>
             <h3 className={css(styles.title)}>{title}</h3>
             <p className={css(styles.body)}>{body}</p>
             <p className={css(styles.createdAt)}>{formatDateTime(created_at)}</p>
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#333',
         fontSize: 20,
+        letterSpacing: '0.1em',
     },
     body: {
         color: '#555',
@@ -45,7 +49,8 @@ const styles = StyleSheet.create({
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         width: window.innerWidth * 0.5,
-        height: '100%'
+        height: '100%',
+        letterSpacing: '0.1em',
     },
     createdAt: {
         color: '#999',

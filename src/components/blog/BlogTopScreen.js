@@ -6,6 +6,14 @@ import BlogItem from './BlogItem';
 import Header from '../Header';
 
 export default function BlogScreen(props) {
+    const {
+        history
+    } = props;
+
+    const handleTransitionDetail = (blog) => () => {
+        history.push(`/${blog.id}`, blog)
+    }
+
     return (
         <>
             <Header />
@@ -30,7 +38,10 @@ export default function BlogScreen(props) {
                             <>
                                 {blogList.map(blog => {
                                     return (
-                                        <BlogItem key={blog.id} {...blog} />
+                                        <BlogItem
+                                            key={blog.id}
+                                            {...blog}
+                                            onClick={handleTransitionDetail(blog)} />
                                     )
                                 })}
                             </>
