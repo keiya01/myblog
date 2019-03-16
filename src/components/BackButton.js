@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
         transition: 'box-shadow 200ms',
         ':hover': {
             boxShadow: '0 0 3px #aaa',
+        },
+        '@media(max-width: 480px)': {
+            position: 'fixed',
+            top: 'unset',
+            bottom: 30,
+            left: 10
         }
     },
     arrowIcon: {
