@@ -33,12 +33,18 @@ const styles = StyleSheet.create({
         ':hover': {
             transform: 'translateY(-1px)',
             boxShadow: '0px 1px 3px #aaa'
+        },
+        '@media(max-width: 480px)': {
+            width: '90%'
         }
     },
     title: {
         color: '#333',
         fontSize: 20,
         letterSpacing: '0.1em',
+        '@media(max-width: 480px)': {
+            fontSize: 18
+        }
     },
     body: {
         color: '#555',
@@ -48,15 +54,17 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
-        width: window.innerWidth * 0.5,
+        width: '95%',
         height: '100%',
         letterSpacing: '0.1em',
+        '@media(max-width: 480px)': {
+            fontSize: 15,
+        }
     },
     createdAt: {
         color: '#999',
         fontSize: 14,
         textAlign: 'right',
         marginTop: 10,
-        marginRight: 10
     }
 })
