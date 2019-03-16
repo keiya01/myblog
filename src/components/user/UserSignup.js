@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from "react-router-dom";
 import { StyleSheet, css } from "aphrodite";
 import { useCanSubmit } from "../../hooks/form";
 import { Mutation } from 'react-apollo';
@@ -9,7 +10,6 @@ const { useReducer, useState, useContext } = React;
 
 const initialState = {
     user: {
-        name: '',
         nickname: '',
         password: '',
     },
@@ -17,14 +17,6 @@ const initialState = {
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'name':
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    name: action.value
-                }
-            }
         case 'nickname':
             return {
                 ...state,
@@ -46,22 +38,57 @@ const reducer = (state, action) => {
 
 export default function UserSignup(props) {
     const { mutation, history } = props;
-
-    const {setUser} = useContext(CurrentUser);
+    const { setUser } = useContext(CurrentUser);
     const [state, dispatch] = useReducer(reducer, initialState);
     const {
-        name,
         nickname,
         password,
     } = state.user;
-    const canSubmit = useCanSubmit([name, nickname, password]);
+    const [errors, setErrors] = useState({
+        nickname: "",
+        password: "",
+    });
+
+    const validateLength = () => {
+        if (nickname.length > 3 && password.length > 5) {
+            return true
+        }
+
+        return false
+    }
+
+    const canSubmit = useCanSubmit([nickname, password], validateLength);
 
     const handleOnChange = type => event => {
         dispatch({ type, value: event.target.value });
     }
 
     const handleOnSubmit = (mutation) => async () => {
-        const { data } = await mutation({ variables: { name, nickname, password } });
+        const query = await mutation({ variables: { name: nickname, nickname, password } }).catch(err => {
+            const error = err.toString();
+            console.log(error)
+            switch (true) {
+                case error.includes("UNIQUE"):
+                    setErrors(errors => ({
+                        ...errors,
+                        nickname: "このnicknameはすでに使われています",
+                    }));
+                    break;
+                default:
+                    setErrors({
+                        nickname: "",
+                        password: "",
+                    });
+                    break;
+            }
+        });
+
+        if (!query) {
+            return
+        }
+
+        const { data } = query;
+
         const id = data.createUser.public_id;
         setUser(data.createUser);
         localStorage.setItem('id', id);
@@ -72,25 +99,22 @@ export default function UserSignup(props) {
         <Mutation mutation={CREATE_USER}>
             {mutation => (
                 <div className={css(styles.form)}>
+                    <Link to='/login' className={css(styles.link)}>Login</Link>
                     <h3 className={css(styles.formTitle)}>Signup</h3>
-                    <p>name</p>
-                    <input
-                        type='text'
-                        value={name}
-                        onChange={handleOnChange('name')} />
-                    <br />
-                    <p>nickname</p>
+                    <p className={css(styles.label)}>nickname<span className={css(styles.warningMsg)}>※他のアカウントと異なる値 / 最低3文字</span></p>
                     <input
                         type='text'
                         value={nickname}
                         onChange={handleOnChange('nickname')} />
                     <br />
-                    <p>password</p>
+                    <p className={css(styles.error)}>{errors.nickname}</p>
+                    <p className={css(styles.label)} style={{ marginTop: 40, }}>password<span className={css(styles.warningMsg)}>※最低5文字</span></p>
                     <input
                         type='password'
                         value={password}
                         onChange={handleOnChange('password')} />
                     <br />
+                    <p className={css(styles.error)}>{errors.password}</p>
                     <button
                         disabled={!canSubmit}
                         className={css(styles.submitButton)}
@@ -105,6 +129,7 @@ export default function UserSignup(props) {
 
 const styles = StyleSheet.create({
     form: {
+        position: 'relative',
         width: '90%',
         maxWidth: 500,
         backgroundColor: '#fff',
@@ -113,17 +138,35 @@ const styles = StyleSheet.create({
         ':nth-child(n) > input': {
             width: '100%',
             padding: '10px',
-            marginBottom: 40,
             borderRadius: 5,
             border: '1px solid #ccc',
             fontSize: 16
         },
-        ':nth-child(n) > p': {
-            color: '#777',
-            fontWeight: 'bold',
-            fontSize: 15,
-            marginLeft: 5,
-            marginBottom: 10
+    },
+    label: {
+        color: '#777',
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginLeft: 5,
+        marginBottom: 10
+    },
+    error: {
+        color: '#ff6161',
+        fontSize: 15,
+        textAlign: 'center'
+    },
+    link: {
+        position: 'absolute',
+        top: 10,
+        right: 30,
+        fontSize: 16,
+        color: '#555',
+        textDecoration: 'none',
+        borderBottom: '1px solid #333',
+        paddingBottom: 1,
+        letterSpacing: '0.1em',
+        ":hover": {
+            opacity: 0.8
         }
     },
     formTitle: {
@@ -131,6 +174,11 @@ const styles = StyleSheet.create({
         color: '#516C9D',
         textAlign: 'center',
         marginBottom: 50
+    },
+    warningMsg: {
+        color: '#aaa',
+        fontSize: 13,
+        marginLeft: 10,
     },
     submitButton: {
         width: '100%',

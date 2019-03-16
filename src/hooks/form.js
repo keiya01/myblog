@@ -17,14 +17,19 @@ const validateEmptyValue = (arr) => {
     return false
 }
 
-export const useCanSubmit = arr => {
-    const [canSubmit, setCanSubmit] = useState(false)
-    const validation = validateEmptyValue(arr)
+export const useCanSubmit = (arr, validateLength) => {
+    const [canSubmit, setCanSubmit] = useState(false);
+    
+    let validate = false;
+    validate = validateEmptyValue(arr);
+    if(validateLength) {
+        validate = validateLength();
+    }
     useEffect(() => {
-        if (validation) {
-            setCanSubmit(true)
-            return () => setCanSubmit(false)
-        }
+        if (validate) {
+            setCanSubmit(true);
+            return () => setCanSubmit(false);
+        };
     }, arr)
 
     return canSubmit

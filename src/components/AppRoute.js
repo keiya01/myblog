@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import BlogTopScreen from './blog/BlogTopScreen';
 import BlogNewScreen from './blog/BlogNewScreen';
 import UserNewScreen from './user/UserNewScreen';
+import BlogDetailScreen from './blog/BlogDetailScreen';
 
 const { useEffect } = React;
 
@@ -31,6 +32,7 @@ export default function AppRoute() {
                 <Route path='/signup' render={props => <UserNewScreen isLogin={false} {...props}/>}/>
                 <Route path='/login' render={props => <UserNewScreen isLogin={true} {...props}/>}/>
                 <Route path='/new' render={props => <AuthComponent {...props} component={BlogNewScreen} />} />
+                <Route path='/:id' component={BlogDetailScreen} />
                 <Route path='/' exact component={BlogTopScreen} />
             </ScrollToTop>
         </Router>

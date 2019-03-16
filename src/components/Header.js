@@ -3,11 +3,19 @@ import { StyleSheet, css } from "aphrodite";
 import { Link } from "react-router-dom";
 import { CurrentUser } from "../contexts/user";
 
-const { useContext } = React;
+const { useState, useEffect, useContext } = React;
 
 export default function Header(props) {
     const { user: current_user, setUser } = useContext(CurrentUser);
-    const isLogin = Object.keys(current_user).length !== 0;
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+        if (Object.keys(current_user).length !== 0) {
+            setIsLogin(true);
+        } else {
+            setIsLogin(false);
+        }
+    }, [current_user])
 
     const handleOnLogout = () => {
         localStorage.removeItem('id');

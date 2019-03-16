@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { StyleSheet, css } from "aphrodite";
 import { useCanSubmit } from "../../hooks/form";
 import { GET_USER } from '../../graphql/user';
@@ -47,8 +48,8 @@ export default function UserLogin(props) {
     } = state.user;
     const canSubmit = useCanSubmit([nickname, password]);
     const [errors, setErrors] = useState({
-        isError: false,
-        message: "",
+        nickname: "",
+        password: "",
     })
 
     const handleOnChange = type => event => {
@@ -61,14 +62,14 @@ export default function UserLogin(props) {
             switch (true) {
                 case error.includes("User not found"):
                     setErrors({
-                        isError: true,
-                        message: "User not found",
+                        nickname: "ユーザーが見つかりませんでした",
+                        password: "",
                     });
                     break;
                 case error.includes("Password is invalid"):
                     setErrors({
-                        isError: true,
-                        message: "Password is invalid",
+                        nickname: "",
+                        password: "パスワードが一致しません",
                     });
                     break
                 default:
@@ -95,24 +96,22 @@ export default function UserLogin(props) {
         <ApolloConsumer>
             {client => (
                 <div className={css(styles.form)}>
+                    <Link to='/signup' className={css(styles.link)}>Signup</Link>
                     <h3 className={css(styles.formTitle)}>Login</h3>
-                    {
-                        errors.isError
-                        &&
-                        <p>{errors.message}</p>
-                    }
-                    <p>nickname</p>
+                    <p className={css(styles.label)}>nickname</p>
                     <input
                         type='text'
                         value={nickname}
                         onChange={handleOnChange('nickname')} />
                     <br />
-                    <p>password</p>
+                    <p className={css(styles.error)}>{errors.nickname}</p>
+                    <p className={css(styles.label)} style={{ marginTop: 40, }}>password</p>
                     <input
                         type='password'
                         value={password}
                         onChange={handleOnChange('password')} />
                     <br />
+                    <p className={css(styles.error)}>{errors.password}</p>
                     <button
                         disabled={!canSubmit}
                         className={css(styles.submitButton)}
@@ -127,6 +126,7 @@ export default function UserLogin(props) {
 
 const styles = StyleSheet.create({
     form: {
+        position: 'relative',
         width: '90%',
         maxWidth: 500,
         backgroundColor: '#fff',
@@ -135,18 +135,36 @@ const styles = StyleSheet.create({
         ':nth-child(n) > input': {
             width: '100%',
             padding: '10px',
-            marginBottom: 40,
             borderRadius: 5,
             border: '1px solid #ccc',
             fontSize: 16
         },
-        ':nth-child(n) > p': {
-            color: '#777',
-            fontWeight: 'bold',
-            fontSize: 15,
-            marginLeft: 5,
-            marginBottom: 10
+    },
+    link: {
+        position: 'absolute',
+        top: 10,
+        right: 30,
+        fontSize: 16,
+        color: '#555',
+        textDecoration: 'none',
+        borderBottom: '1px solid #333',
+        paddingBottom: 1,
+        letterSpacing: '0.1em',
+        ":hover": {
+            opacity: 0.8
         }
+    },
+    labe: {
+        color: '#777',
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginLeft: 5,
+        marginBottom: 10
+    },
+    error: {
+        color: '#ff6161',
+        fontSize: 15,
+        textAlign: 'center'
     },
     formTitle: {
         fontSize: 30,
