@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 30,
         left: 50,
+        zIndex: 100,
         width: 55,
         height: 55,
         borderRadius: '50%',
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
             position: 'fixed',
             top: 'unset',
             bottom: 30,
-            left: 10
+            left: 10,
+            opacity: 0.7
         }
     },
     arrowIcon: {
