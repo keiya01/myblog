@@ -44,7 +44,10 @@ const styles = StyleSheet.create({
         maxWidth: 600,
         minHeight: '100vh',
         margin: '0 auto',
-        padding: '100px 0'
+        padding: '100px 0',
+        '@media(max-width: 480px)': {
+            padding: '50px 0'
+        }
     },
     title: {
         fontSize: 25,
