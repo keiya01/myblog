@@ -22,12 +22,16 @@ export default function BlogDetailScreen(props) {
         }
     }, [history.location.state])
 
+    const handleOnEdit = () => {
+        history.push('/new', blog);
+    }
+
     return (
         <div className={css(styles.container)}>
             <BackButton history={history} />
             <div className={css(styles.blogContainer)}>
                 <div className={css(styles.optionBox)}>
-                    <p className={css(styles.edit)}>編集</p>
+                    <p className={css(styles.edit)} onClick={handleOnEdit}>編集</p>
                     <p className={css(styles.delete)}>削除</p>
                 </div>
                 <h3 className={css(styles.title)}>{blog.title}</h3>
