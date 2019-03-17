@@ -2,15 +2,18 @@ import * as React from 'react';
 import { StyleSheet, css } from "aphrodite";
 import { useCanSubmit } from "../../hooks/form";
 import { CurrentUser } from "../../contexts/user";
+import { useAutoAdjustHeight } from '../../hooks/form'
 
-const { useState, useContext } = React;
+const { useState, useContext, } = React;
 
 export default function BlogForm(props) {
-    const { mutation, history } = props;
-    const [title, changeTitle] = useState('');
-    const [body, changeBody] = useState('');
+    const { mutation, history, isEdit, blog } = props;
+    const [title, changeTitle] = useState(blog ? blog.title : '');
+    const [body, changeBody] = useState(blog ? blog.body : '');
     const canSubmit = useCanSubmit([title, body]);
-    const { user: {id} } = useContext(CurrentUser);
+    const { user: { id } } = useContext(CurrentUser);
+
+    const [form, textareaHeight] = useAutoAdjustHeight([body]);
 
     const handleChangeTitle = event => {
         changeTitle(event.target.value);
@@ -34,7 +37,7 @@ export default function BlogForm(props) {
                 disabled={!canSubmit}
                 className={css(styles.createButton)}
                 onClick={handleOnSubmit}>
-                Create
+                {isEdit ? 'Update' : 'Create'}
             </button>
             <input
                 className={css(styles.title)}
@@ -45,7 +48,9 @@ export default function BlogForm(props) {
                 className={css(styles.body)}
                 placeholder='Please enter body...'
                 value={body}
-                onChange={handleChangeBody} />
+                ref={form}
+                onChange={handleChangeBody}
+                style={{ height: textareaHeight }} />
         </div>
     )
 }
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         width: '90%',
         maxWidth: 600,
-        height: '100%',
+        heigh: '100%',
         minHeight: '100vh',
         backgroundColor: '#fff',
         boxShadow: '0 0 5px #aaa',
@@ -105,8 +110,8 @@ const styles = StyleSheet.create({
         }
     },
     body: {
+        display: 'inline-block',
         width: '100%',
-        height: '100%',
         minHeight: '100vh',
         backgroundColor: '#fff',
         border: 'none',
