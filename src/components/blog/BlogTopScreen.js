@@ -33,7 +33,7 @@ export default function BlogScreen(props) {
                         }
 
                         if(error) {
-                            return null
+                            return <p>Error 😡</p>
                         }
 
                         const { blogList } = data;

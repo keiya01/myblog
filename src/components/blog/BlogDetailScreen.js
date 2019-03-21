@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import BackButton from '../BackButton';
+import { CurrentUser } from '../../contexts/user';
 
 const { useState, useEffect, useContext } = React;
 
@@ -8,10 +9,12 @@ export default function BlogDetailScreen(props) {
     const {
         history,
     } = props;
+    const { user:currentUser } = useContext(CurrentUser);
 
     const [blog, setBlog] = useState({
         title: "",
-        body: ""
+        body: "",
+        user_id: 0
     });
 
     useEffect(() => {
@@ -30,10 +33,14 @@ export default function BlogDetailScreen(props) {
         <div className={css(styles.container)}>
             <BackButton history={history} />
             <div className={css(styles.blogContainer)}>
-                <div className={css(styles.optionBox)}>
-                    <p className={css(styles.edit)} onClick={handleOnEdit}>編集</p>
-                    <p className={css(styles.delete)}>削除</p>
-                </div>
+                {
+                    currentUser.id === blog.user_id
+                    &&
+                    <div className={css(styles.optionBox)}>
+                        <p className={css(styles.edit)} onClick={handleOnEdit}>編集</p>
+                        <p className={css(styles.delete)}>削除</p>
+                    </div>
+                }
                 <h3 className={css(styles.title)}>{blog.title}</h3>
                 <p className={css(styles.body)}>{blog.body}</p>
             </div>
