@@ -25,14 +25,18 @@ export default function BlogScreen(props) {
                         const {
                             loading,
                             data,
+                            error
                         } = query;
 
                         if (loading) {
                             return <p>Loading...</p>
                         }
 
-                        const { blogList } = data;
+                        if(error) {
+                            return null
+                        }
 
+                        const { blogList } = data;
 
                         return (
                             <>
