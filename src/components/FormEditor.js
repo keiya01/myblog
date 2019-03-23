@@ -1,11 +1,31 @@
 import React from "react";
-import { StyleSheet, css } from 'aphrodite';
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from "draft-js";
+import "../styles/rich-editor.css";
 
-const { useState, useRef } = React;
+const { useState, useRef, useEffect } = React;
+
+const useTogglePlaceholder = (editorState, showPlaceholder, hidePlaceholder) => {
+    const [className, setClassName] = useState(showPlaceholder);
+    useEffect(() => {
+        const contentState = editorState.getCurrentContent();
+        if (!contentState.hasText()) {
+            if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+                console.log("success!!!!")
+                setClassName(`${showPlaceholder} ${hidePlaceholder}`);
+                return
+            }
+            setClassName(showPlaceholder);
+        }else {
+            setClassName(`${showPlaceholder} ${hidePlaceholder}`);
+        }
+    }, [editorState.getCurrentContent()])
+
+    return className
+}
 
 export default function FormEditor(props) {
     const [editorState, changeEditorState] = useState(EditorState.createEmpty());
+    const className = useTogglePlaceholder(editorState, "richEditor", "richEditor-hidePlaceholder");
     const editor = useRef(null)
 
     const handleOnFocusEditor = () => {
@@ -21,7 +41,7 @@ export default function FormEditor(props) {
                 return "insertNewLine"
             }
             default: {
-                return;
+                return getDefaultKeyBinding(e);
             }
         }
     }
@@ -42,9 +62,12 @@ export default function FormEditor(props) {
         }
     }
 
+    const placeholder = "Please enter body...";
+
     return (
-        <div className={css(styles.container)} onClick={handleOnFocusEditor}>
+        <div className={className} onClick={handleOnFocusEditor}>
             <Editor
+                placeholder={placeholder}
                 editorState={editorState}
                 onChange={e => changeEditorState(e)}
                 handleKeyCommand={handleKeyCommand}
@@ -53,14 +76,3 @@ export default function FormEditor(props) {
         </div>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: "90%",
-        maxWidth: 600,
-        height: "100%",
-        minHeight: "100vh",
-        border: "1px solid #222",
-        margin: "0 auto",
-    }
-})
